@@ -3,10 +3,9 @@ module SlackMathbot
     class Calculate < SlackRubyBot::Commands::Base
       command 'calculate' do |client, data, _match|
         words = data.text.split(" ")
+        2.times {words.shift}
 
-        words.each do |word|
-          client.say(channel: data.channel, text: word)
-        end
+        client.say(channel: data.channel, text: words)
       end
     end
   end
