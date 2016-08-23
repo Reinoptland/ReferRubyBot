@@ -1,0 +1,12 @@
+require 'slack-ruby-bot'
+require 'slack-ruby-client'
+require 'slack-referbot/commands/calculate'
+<<<<<<< 03dfbfd0acf09e2df91faac8d8d056bc1f9d2f81
+require 'slack-referbot/commands/vacancylist'
+||||||| merged common ancestors
+=======
+require 'slack-referbot/commands/testconversation'
+>>>>>>> added in conversation switch
+require 'slack-referbot/bot'
+
+@@in_conversation = false
