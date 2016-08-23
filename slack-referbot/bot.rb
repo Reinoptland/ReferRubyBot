@@ -12,7 +12,13 @@ module SlackReferbot
         dm_channel = uri_response["channel"]["id"]
 
         client.say(channel: dm_channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies? You have posted 'refer' to #{data.channel}, which is why I am DMing you at #{dm_channel}.")
+
+        @@in_conversation = true
+      end # RegEx 'refer' listener
+
+      if @@in_conversation
+        client.say(channel: dm_channel, text: "We are now conversing")
       end
-    end
-  end
-end
+    end # Outer operator
+  end # Class
+end # Module
