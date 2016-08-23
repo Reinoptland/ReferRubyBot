@@ -2,6 +2,8 @@ require 'net/http'
 
 module SlackReferbot
   class Bot < SlackRubyBot::Bot
+    @@in_conversation = false
+
     operator '' do |client, data, match|
       if /(^refer| refer)/i.match(data.text)
         uri = URI("https://slack.com/api/im.open?token=#{ENV['SLACK_API_TOKEN']}&user=#{data.user}")
