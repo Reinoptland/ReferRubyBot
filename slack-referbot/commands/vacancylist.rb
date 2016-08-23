@@ -3,7 +3,7 @@ require 'json'
 
 module SlackReferbot
   module Commands
-    class List < SlackRubyBot::Commands::Base
+    class Vacancylist < SlackRubyBot::Commands::Base
       command 'list' do |client, data, _match|
 
         offers = HTTP.get('https://api.recruitee.com/c/referbot/careers/offers')
