@@ -6,6 +6,7 @@ module SlackReferbot
       if /(^refer| refer)/i.match(data.text)
         uri = URI("https://slack.com/api/im.open?token=#{ENV['SLACK_API_TOKEN']}&user=#{data.user}")
 
+        # Needs reformatting with names to symbol
         uri_response = JSON.parse(Net::HTTP.get(uri))
 
         dm_channel = uri_response["channel"]["id"]
