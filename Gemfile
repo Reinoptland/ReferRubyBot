@@ -7,6 +7,8 @@ gem 'sinatra'
 gem 'dotenv'
 gem 'eventmachine'
 gem 'faye-websocket'
+gem 'http'
+gem 'json'
 
 
 group :development, :test do
