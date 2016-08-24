@@ -1,6 +1,3 @@
-require 'http'
-require 'json'
-
 module SlackReferbot
   module Commands
     class Vacancylist < SlackRubyBot::Commands::Base
