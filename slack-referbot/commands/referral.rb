@@ -20,9 +20,9 @@ module SlackReferbot
               client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
 
               Redis.current.mapped_hmset(identifier, referral)
-            end
-          end
-        end
+            end # End client.on
+          end # End if
+        end # End 'add'
 
         # client.say(text: 'I also want to know the email adress.', channel: data.channel)
         # client.on :message do |answer|
