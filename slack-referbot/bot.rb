@@ -1,5 +1,3 @@
-require 'net/http'
-
 module SlackReferbot
   class Bot < SlackRubyBot::Bot
     operator '' do |client, data, match|

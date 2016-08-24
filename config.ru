@@ -5,6 +5,10 @@ Dotenv.load
 
 require 'slack-referbot'
 require 'web'
+require 'net/http'
+require 'http'
+require 'json'
+require 'redis'
 
 Thread.abort_on_exception = true
 
