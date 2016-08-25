@@ -2,6 +2,9 @@ module SlackReferbot
   module Commands
     class Email < SlackRubyBot::Commands::Base
       command 'email' do |client, data, match|
+
+        $workaround =""
+
         identifier = match['expression']
         referral = {}
 

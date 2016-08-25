@@ -4,6 +4,7 @@ module SlackReferbot
       command 'phone' do |client, data, match|
         identifier = match['expression']
         referral = {}
+        $workaround =""
 
         client.say(text: 'Which phone number may I register?', channel: data.channel)
 
