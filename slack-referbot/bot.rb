@@ -15,13 +15,21 @@ module SlackReferbot
 
         when $workaround == nil
 
+          uri = URI("https://slack.com/api/im.open?token=#{ENV['SLACK_API_TOKEN']}&user=#{data.user}")
+
+          uri_response = JSON.parse(Net::HTTP.get(uri))
+
+          dm_channel = uri_response["channel"]["id"]
+
           resp = [ "I yield. I'm only a bot. try typing help",
            "My function is to get your referal. Do you know someone who wants to join our team? Type add *name*",
            "I was made by trainees. You could add improvements to github :)",
-          "-bleeb- bleeb- bleeb- unknown command. I accept refer"
+          "-bleeb- bleeb- bleeb- unknown command. I accept refer",
+          "Im sorry I answer way too many messages. Blame my code.",
+          "Let me sleep"
           ]
 
-         client.say(text: "#{resp.sample}", channel: data.channel)
+         client.say(text: "#{resp.sample}", channel: dm_channel)
        end
 
 
