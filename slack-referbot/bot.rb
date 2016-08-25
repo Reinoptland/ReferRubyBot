@@ -16,7 +16,12 @@ module SlackReferbot
       else
         #a test reaction of the bot to check if we run this code
         # client.instance_variable_get(:@callbacks)['message'].pop
-        client.say(text: "hello!", channel: data.channel)
+        resp = [ "I yield. I'm only a bot. try typing help",
+          "My function is to get your referal. Do you know someone who wants to join our team? Type add *name*",
+          "I was made by trainees. You could add improvements to github :)",
+          "-bleeb- bleeb- bleeb- unknown command. I accept refer"]
+
+        client.say(text: "#{resp.sample}", channel: data.channel)
       end # RegEx 'refer' listener
 
 
