@@ -26,12 +26,8 @@ module SlackReferbot
                   client.instance_variable_get(:@callbacks)['message'].pop
                   referral[:email] = answer.text
 
-                  offers = HTTP.get('https://api.recruitee.com/c/referbot/careers/offers')
-                  test1 = JSON.parse(offers, symbolize_names: true)
-                    contents = test1[:offers]
-                    contents.each_with_index do |content, index|
-                      client.say(channel: data.channel, text: "#{index + 1}, #{content[:title]} \n #{content[:careers_url]} \n")
-                    end
+                  list = getlist
+                  client.say(text: "#{list}", channel: data.channel)
 
                     client.say(text: "Which vacancy would your candidate be best for?", channel: data.channel)
                     client.on :message do |answer|
@@ -75,4 +71,16 @@ module SlackReferbot
       end
     end
   end
+end
+
+def getlist
+  receivelist = HTTP.get('https://api.recruitee.com/c/referbot/careers/offers')
+  # receivelist = HTTParty.get('https://api.recruitee.com/c/levelupventures/careers/offers').to_json
+  test1 = JSON.parse(receivelist, symbolize_names: true)
+  contents = test1[:offers]
+  list = ""
+  contents.each_with_index do |content, index|
+    list = list + "#{index+1}, #{content[:title]} \n #{content[:careers_url]} \n"
+  end
+  return list
 end
