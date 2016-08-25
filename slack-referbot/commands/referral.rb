@@ -17,9 +17,20 @@ module SlackReferbot
             client.on :message do |answer|
               client.instance_variable_get(:@callbacks)['message'].pop
               referral[:last_name] = answer.text
-              client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
+              client.say(text: "How about a phonenumber?", channel: data.channel)
 
-              Redis.current.mapped_hmset(identifier, referral)
+              client.on :message do |answer|
+                client.instance_variable_get(:@callbacks)['message'].pop
+                referral[:phone_number] = answer.text.to_i
+                client.say(text: "Can we get an e-mail maybe?", channel: data.channel)
+
+                client.on :message do |answer|
+                  client.instance_variable_get(:@callbacks)['message'].pop
+                  referral[:email] = answer.text
+                  client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
+                  Redis.current.mapped_hmset(identifier, referral)
+                end
+              end
             end
           end
         end
