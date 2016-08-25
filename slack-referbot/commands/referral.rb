@@ -5,28 +5,29 @@ module SlackReferbot
         identifier = match['expression']
         referral = {}
 
-        client.say(text: 'What can I fill in as a first name?', channel: data.channel)
-
-        client.on :message do |answer|
-
+          client.say(text: 'What can I fill in as a first name?', channel: data.channel)
+          client.on :message do |answer|
           if !answer.text.match(/^add /)
             client.instance_variable_get(:@callbacks)['message'].pop
             referral[:first_name] = answer.text
-            client.say(text: 'Can you also give me the last name?', channel: data.channel)
 
+            client.say(text: 'Can you also give me the last name?', channel: data.channel)
             client.on :message do |answer|
               client.instance_variable_get(:@callbacks)['message'].pop
               referral[:last_name] = answer.text
-              client.say(text: "How about a phonenumber?", channel: data.channel)
 
+              client.say(text: "How about a phonenumber?", channel: data.channel)
               client.on :message do |answer|
                 client.instance_variable_get(:@callbacks)['message'].pop
                 referral[:phone_number] = answer.text.to_i
-                client.say(text: "Can we get an e-mail maybe?", channel: data.channel)
 
+                client.say(text: "Can we get an e-mail maybe?", channel: data.channel)
                 client.on :message do |answer|
                   client.instance_variable_get(:@callbacks)['message'].pop
                   referral[:email] = answer.text
+
+                  
+
                   client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
                   Redis.current.mapped_hmset(identifier, referral)
                 end
