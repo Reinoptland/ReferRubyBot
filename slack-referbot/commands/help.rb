@@ -4,6 +4,8 @@ module SlackReferbot
 
       command 'help' do |client, data, match|
 
+        $workaround =""
+
         help_texts = [
           'Welcome to my help function!',
           "Its my function to acquire contact details of potential new colleges.",

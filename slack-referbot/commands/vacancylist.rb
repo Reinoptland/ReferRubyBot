@@ -3,6 +3,8 @@ module SlackReferbot
     class Vacancylist < SlackRubyBot::Commands::Base
       command 'list' do |client, data, _match|
 
+        $workaround =""
+
         offers = HTTP.get('https://api.recruitee.com/c/referbot/careers/offers')
 
         test1 = JSON.parse(offers, symbolize_names: true)
