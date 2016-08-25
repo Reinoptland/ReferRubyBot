@@ -9,6 +9,7 @@ module SlackReferbot
 
         client.on :message do |answer|
 
+          $workaround = ""
 
           if !answer.text.match(/^email /)
             client.instance_variable_get(:@callbacks)['message'].pop
@@ -20,6 +21,7 @@ module SlackReferbot
               client.say(text: "Thank you! I have added the email to the registry.", channel: data.channel)
 
               Redis.current.mapped_hmset(identifier, referral)
+
             end
           end
         end

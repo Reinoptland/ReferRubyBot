@@ -5,6 +5,7 @@ module SlackReferbot
       command 'help' do |client, data, match|
         # identifier = match['expression']
 
+          $workaround = ""
         #displayed help text
         client.say(text: 'Welcome to my help function!', channel: data.channel)
         client.say(text: "Its my function to acquire contact details of potential new colleges.", channel: data.channel)

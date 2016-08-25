@@ -8,7 +8,7 @@ module SlackReferbot
         client.say(text: 'Which phone number may I register?', channel: data.channel)
 
         client.on :message do |answer|
-
+          $workaround = ""
 
           if !answer.text.match(/^phone /)
             client.instance_variable_get(:@callbacks)['message'].pop
