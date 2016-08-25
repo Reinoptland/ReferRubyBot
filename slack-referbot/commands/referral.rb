@@ -26,10 +26,22 @@ module SlackReferbot
                   client.instance_variable_get(:@callbacks)['message'].pop
                   referral[:email] = answer.text
 
-                  
+                  offers = HTTP.get('https://api.recruitee.com/c/referbot/careers/offers')
+                  test1 = JSON.parse(offers, symbolize_names: true)
+                    contents = test1[:offers]
+                    contents.each_with_index do |content, index|
+                      client.say(channel: data.channel, text: "#{index + 1}, #{content[:title]} \n #{content[:careers_url]} \n")
+                    end
+
+                    client.say(text: "Which vacancy would your candidate be best for?", channel: data.channel)
+                    client.on :message do |answer|
+                      client.instance_variable_get(:@callbacks)['message'].pop
+                      referral[:vacancy_number] = answer.text
+
 
                   client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
                   Redis.current.mapped_hmset(identifier, referral)
+                  end
                 end
               end
             end
