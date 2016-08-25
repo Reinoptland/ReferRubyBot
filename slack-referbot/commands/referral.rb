@@ -7,7 +7,7 @@ module SlackReferbot
 
           client.say(text: 'What can I fill in as a first name?', channel: data.channel)
           client.on :message do |answer|
-          if !answer.text.match(/^add /)
+          if !answer.text.match(/^add /i)
             client.instance_variable_get(:@callbacks)['message'].pop
             referral[:first_name] = answer.text
 
