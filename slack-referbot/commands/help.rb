@@ -3,7 +3,7 @@ module SlackReferbot
     class Referral < SlackRubyBot::Commands::Base
 
       command 'help' do |client, data, match|
-        identifier = match['expression']
+        # identifier = match['expression']
 
         #displayed help text
         client.say(text: 'Welcome to my help function!', channel: data.channel)
