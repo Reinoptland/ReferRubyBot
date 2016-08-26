@@ -80,19 +80,6 @@ module SlackReferbot
             end
           end
         end
-
-        # client.say(text: 'I also want to know the email adress.', channel: data.channel)
-        # client.on :message do |answer|
-        #   referral[:email] = answer.text
-        # end
-        # client.say(text: 'Which phone number may I register?', channel: data.channel)
-        # client.on :message do |answer|
-        #   referral[:phone] = answer.text
-        # end
-        # client.say(text: 'Which vacancy can I sign up our candidate for?', channel: data.channel)
-        # client.on :message do |answer|
-        #   referral[:vacancy] = answer.text
-        # end
       end
 
       command 'whois' do |client, data, match|
