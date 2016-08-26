@@ -18,28 +18,30 @@ module SlackReferbot
               client.instance_variable_get(:@callbacks)['message'].pop
               referral[:last_name] = answer.text
 
-              client.say(text: "How about a phonenumber?", channel: data.channel)
+
+
+              client.say(text: "Can we get an e-mail maybe?", channel: data.channel)
               $workaround =""
               client.on :message do |answer|
                 client.instance_variable_get(:@callbacks)['message'].pop
-                referral[:phone_number] = answer.text.to_i
 
-                client.say(text: "Can we get an e-mail maybe?", channel: data.channel)
+                email_slack_formatted = answer.text
+
+                # Test if Slack reformatted the string containing the referee's e-mail (it will contain '|'). If so reformat, if not, let it be.
+                if /\|/.match(email_slack_formatted)
+                  referral[:email] = email_slack_formatted.split('|')[1].chomp('>')
+                else
+                  referral[:email] = answer.text
+                end
+
+                list = getlist
+                client.say(text: "#{list}", channel: data.channel)
+
+                client.say(text: "How about a phonenumber?", channel: data.channel)
                 $workaround =""
                 client.on :message do |answer|
                   client.instance_variable_get(:@callbacks)['message'].pop
-
-                  email_slack_formatted = answer.text
-
-                  # Test if Slack reformatted the string containing the referee's e-mail (it will contain '|'). If so reformat, if not, let it be.
-                  if /\|/.match(email_slack_formatted)
-                    referral[:email] = email_slack_formatted.split('|')[1].chomp('>')
-                  else
-                    referral[:email] = answer.text
-                  end
-
-                  list = getlist
-                  client.say(text: "#{list}", channel: data.channel)
+                  referral[:phone_number] = answer.text.to_i
 
                     client.say(text: "Which vacancy would your candidate be best for?", channel: data.channel)
                     $workaround =""
