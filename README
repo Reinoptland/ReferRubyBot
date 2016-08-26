@@ -1,0 +1,40 @@
+# Referbot
+This chatbot was made during our 4th week in Codaisseur. Its purpose is to have interaction with people in slack in order to get referral information from team members.
+
+## Unfinished project
+We were only able to work on this project for one week. We have the basics working. Yet further development in needed for the bot to become operational
+
+## Development process
+We have chosen the SlackRubyBot as framework because we are all familiar with Ruby. Setting up the bot so it can get its first bits of conversation is well documented in the tutorials.
+
+It has proven harder to create a well working conversations. At the moment we write this we are still refactoring the conversation. This should cut off many rough edges.
+
+## Program structure
+Every time a post is made in a channel in which the bot is present the slack-referbot.rb file is used. In this file we required all the scripts.
+
+## Used gems
+The gemfile is well commented
+
+## Gitignore
+* .env
+* pkg
+* Gemfile.lock
+* .bundle
+
+## .env
+Every developer working on the project must create its own .env file. This file only contains the slack bot token created on the slack website.
+
+# Testing
+We didn't use any Rspec testing during the project. Yet we did set up the gems. This should make it easy to take up working on this project.
+
+# Recruitee api
+In the referal command (slack-referbot/commands/referral.rb) we get a list of vacancies from the Recruitee api. As for now its not possible to post referral data back to Recruitee.
+
+# Build in commands
+As build now the bot listens to everything in the chat and responses on everything in DM. This is annoying in group chats but necessary in 1 on 1. This is a problem yet to be addressed.
+
+As other working commands there are:
+* help  - shows help function
+* list  - shows a list of vacanties
+* add   - add new referral
+* refer - When refer is said in a public channel the bot reacts in DM

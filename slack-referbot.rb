@@ -1,4 +1,5 @@
 
+# The order in which the scripts are required is also the order ruby excecutes them
 require 'slack-ruby-bot'
 require 'slack-ruby-client'
 require 'slack-referbot/commands/vacancylist'

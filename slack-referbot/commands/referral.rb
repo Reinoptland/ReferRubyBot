@@ -10,7 +10,7 @@ module SlackReferbot
 
           client.on :message do |answer|
           if !answer.text.match(/^add /i)
-            client.instance_variable_get(:@callbacks)['message'].pop
+              client.instance_variable_get(:@callbacks)['message'].pop
             referral[:first_name] = answer.text
 
             client.say(text: 'Can you also give me the last name?', channel: data.channel)
