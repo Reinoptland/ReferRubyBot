@@ -26,7 +26,8 @@ module SlackReferbot
            "I was made by trainees. You could add improvements to github :)",
           "-bleeb- bleeb- bleeb- unknown command. I accept refer",
           "Im sorry I answer way too many messages. Blame my code.",
-          "Let me sleep"
+          "Let me sleep",
+          "I'm afraid I can't let you do that, Dave"
           ]
 
          client.say(text: "#{resp.sample}", channel: dm_channel)
