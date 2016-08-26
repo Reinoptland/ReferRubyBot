@@ -34,25 +34,25 @@ module SlackReferbot
                   referral[:email] = answer.text
                 end
 
-                list = getlist
-                client.say(text: "#{list}", channel: data.channel)
-
                 client.say(text: "How about a phonenumber?", channel: data.channel)
                 $workaround =""
                 client.on :message do |answer|
                   client.instance_variable_get(:@callbacks)['message'].pop
                   referral[:phone_number] = answer.text.to_i
 
-                    client.say(text: "Which vacancy would your candidate be best for?", channel: data.channel)
-                    $workaround =""
-                    client.on :message do |answer|
-                      client.instance_variable_get(:@callbacks)['message'].pop
-                      referral[:vacancy_number] = answer.text
+                  list = getlist
+                  client.say(text: "#{list}", channel: data.channel)
 
-
-                  client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
+                  client.say(text: "Which vacancy would your candidate be best for?", channel: data.channel)
                   $workaround =""
-                  Redis.current.mapped_hmset(identifier, referral)
+                  client.on :message do |answer|
+                    client.instance_variable_get(:@callbacks)['message'].pop
+                    referral[:vacancy_number] = answer.text
+
+
+                    client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
+                    $workaround =""
+                    Redis.current.mapped_hmset(identifier, referral)
                   end
                 end
               end
