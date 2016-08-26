@@ -1,41 +1,38 @@
 module SlackReferbot
   class Bot < SlackRubyBot::Bot
+    conversation_states = {
+      in_conversation: false,
+      state_name: false}
+
     operator '' do |client, data, match|
 
-      case
-        when /(^refer| refer)/i.match(data.text)
-          uri = URI("https://slack.com/api/im.open?token=#{ENV['SLACK_API_TOKEN']}&user=#{data.user}")
+      if /(^refer| refer)/i.match(data.text) && conversation_states[:in_conversation] == false
+        # Get user's DM channel code
+        uri = URI("https://slack.com/api/im.open?token=#{ENV['SLACK_API_TOKEN']}&user=#{data.user}")
+        # Needs reformatting with names to symbol
+        uri_response = JSON.parse(Net::HTTP.get(uri))
+        @dm_channel = uri_response["channel"]["id"]
 
-          # Needs reformatting with names to symbol
-          uri_response = JSON.parse(Net::HTTP.get(uri))
+        client.say(channel: @dm_channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies?")
 
-          dm_channel = uri_response["channel"]["id"]
+        conversation_states[:in_conversation] = true
+      end
 
-          client.say(channel: dm_channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies? Please type 'add <your friend's name here>' to get started!")
+      if /^y/i.match(data.text) && conversation_states[:in_conversation]
+        client.say(channel: data.channel, text: "Excellent, let's get started!#{@dm_channel}")
+        # sleep(0.5)
+        # client.say(channel: @dm_channel, text: "What is your referee's name?")
 
-        when $workaround == nil
+      elsif /^n/i.match(data.text) && conversation_states[:in_conversation]
+        client.say(channel: @dm_channel, text: "My bad!")
+        # sleep(0.5)
+        # client.say(channel: @dm_channel, text: "Feel free to contact me any time you want to refer someone to our company!")
+        # conversation_states[:in_conversation] = true
 
-          uri = URI("https://slack.com/api/im.open?token=#{ENV['SLACK_API_TOKEN']}&user=#{data.user}")
+      elsif conversation_states[:in_conversation]
+        # client.say(channel: @dm_channel, text: "I didn't quite get that... Do you want to refer someone?")
+      end
 
-          uri_response = JSON.parse(Net::HTTP.get(uri))
-
-          dm_channel = uri_response["channel"]["id"]
-
-          resp = [ "I yield. I'm only a bot. try typing help",
-           "My function is to get your referal. Do you know someone who wants to join our team? Type add *name*",
-           "I was made by trainees. You could add improvements to github :)",
-          "-bleeb- bleeb- bleeb- unknown command. I accept refer",
-          "Im sorry I answer way too many messages. Blame my code.",
-          "Let me sleep"
-          ]
-
-         client.say(text: "#{resp.sample}", channel: dm_channel)
-       end
-
-
-       $workaround = nil
-
-      # end # RegEx 'refer' listener
     end # Outer operator
   end # Class
 end # Module
