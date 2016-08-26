@@ -2,6 +2,7 @@ module SlackReferbot
   module Commands
     class Referral < SlackRubyBot::Commands::Base
       command 'add' do |client, data, match|
+        if $workaround == nil
         identifier = match['expression']
         referral = {}
 
@@ -70,13 +71,14 @@ module SlackReferbot
                     general_channel = uri_response["channels"][0]["id"]
 
                     client.say(text: "<@#{data.user}> has just referred a friend to come join our company! What are your excuses, meatbags?", channel: general_channel)
+                    $workaround = nil
                   end
                 end
               end
             end
           end
         end
-
+end
         # client.say(text: 'I also want to know the email adress.', channel: data.channel)
         # client.on :message do |answer|
         #   referral[:email] = answer.text
