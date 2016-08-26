@@ -63,9 +63,9 @@ module SlackReferbot
 
                     # Assuming #general is always the first item in the channels
                     # array. Needs non-hard coded fix
-                    general = uri_response["channels"][0]["id"]
+                    general_channel = uri_response["channels"][0]["id"]
 
-                    client.say(text: "<@#{data.user}> has just referred a friend to come join our company! What are your excuses, meatbags?}", channel: general)
+                    client.say(text: "<@#{data.user}> has just referred a friend to come join our company! What are your excuses, meatbags?}", channel: general_channel)
                   end
                 end
               end
