@@ -55,10 +55,10 @@ module SlackReferbot
                     $workaround =""
                     client.on :message do |answer|
                       client.instance_variable_get(:@callbacks)['message'].pop
-                      referral[:vacancy_number] = answer.text
+                      referral[:vacancy_number] = (answer.text.to_i - 1)
 
 
-                      client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
+                      client.say(text: "Thank you! I have added `#{identifier}` to the registry \n For the position of: #{vacancies_order_by_latest[referral[:vacancy_number]][:title]} \n Thanks for helping me conquer the worl.. \n I mean thanks for referring this awesome person", channel: data.channel)
                       $workaround =""
                       Redis.current.mapped_hmset(identifier, referral)
 
