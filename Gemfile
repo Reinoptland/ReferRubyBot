@@ -29,6 +29,8 @@ gem 'json'
 
 # Redis is our data structure store
 gem 'redis'
+gem 'oauth'
+gem 'twitter'
 
 
 
