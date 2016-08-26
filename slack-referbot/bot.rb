@@ -57,6 +57,8 @@ module SlackReferbot
       # ... email...
       if data.text != '' && ref.states[:get_email] && !ref.states[:get_vacancy]
         ref.attributes[:email] = data.text
+        
+        ref.reformat_email
 
         client.say(channel: data.channel, text: "Great! Let me show you a list of vacancies that we are looking to fill.")
 

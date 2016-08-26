@@ -16,6 +16,12 @@ class Referee
     }
   end
 
+  def reformat_email
+    if /\|/.match(@attributes[:email])
+      @attributes[:email] = @attributes[:email].split('|')[1].chomp('>')
+    end
+  end
+
   attr_accessor :states, :attributes
 
 end
