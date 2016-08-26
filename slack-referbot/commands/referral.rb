@@ -28,7 +28,15 @@ module SlackReferbot
                 $workaround =""
                 client.on :message do |answer|
                   client.instance_variable_get(:@callbacks)['message'].pop
-                  referral[:email] = answer.text
+
+                  email_slack_formatted = answer.text
+
+                  # Test if Slack reformatted the string containing the referee's e-mail (it will contain '|'). If so reformat, if not, let it be.
+                  if /\|/.match(email_slack_formatted)
+                    referral[:email] = email_slack_formatted.split('|')[1].chomp('>')
+                  else
+                    referral[:email] = answer.text
+                  end
 
                   list = getlist
                   client.say(text: "#{list}", channel: data.channel)
