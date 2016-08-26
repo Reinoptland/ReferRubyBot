@@ -29,12 +29,16 @@ gem 'json'
 
 # Redis is our data structure store
 gem 'redis'
+
+# Oauth for API authentication
 gem 'oauth'
+
+# Twitter for posting to twitter
 gem 'twitter'
 
 
 
-group :development, :test do  
+group :development, :test do
   gem 'rake'
   # the development local server
   gem 'foreman'

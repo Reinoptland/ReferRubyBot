@@ -10,6 +10,7 @@ require 'http'
 require 'json'
 require 'redis'
 
+
 Thread.abort_on_exception = true
 
 Thread.new do
@@ -21,5 +22,6 @@ Thread.new do
     raise e
   end
 end
+
 
 run SlackReferbot::Web
