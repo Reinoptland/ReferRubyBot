@@ -11,7 +11,7 @@ module SlackReferbot
 
           dm_channel = uri_response["channel"]["id"]
 
-          client.say(channel: dm_channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies? You have posted 'refer' to #{data.channel}, which is why I am DMing you at #{dm_channel}.")
+          client.say(channel: dm_channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies? Please type 'add <your friend's name here>' to get started!")
 
         when $workaround == nil
 
