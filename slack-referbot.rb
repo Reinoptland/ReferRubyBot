@@ -9,4 +9,5 @@ require 'slack-ruby-client'
 # require 'slack-referbot/commands/help'
 
 require 'lib/referee'
+require 'lib/slackconnection'
 require 'slack-referbot/bot'

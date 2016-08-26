@@ -1,17 +1,15 @@
 module SlackReferbot
   class Bot < SlackRubyBot::Bot
     ref = Referee.new
+    sc = SlackConnection.new
 
     operator '' do |client, data, match|
       # User types refer
       if /(^refer| refer)/i.match(data.text) && ref.states[:in_conversation] == false
-        # # Get user's DM channel code
-        # uri = URI("https://slack.com/api/im.open?token=#{ENV['SLACK_API_TOKEN']}&user=#{data.user}")
-        # # Needs reformatting with names to symbol
-        # uri_response = JSON.parse(Net::HTTP.get(uri))
-        # dm_channel = uri_response["channel"]["id"]
 
-        client.say(channel: data.channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies?")
+        dm_channel = sc.get_dm_channel(data)
+
+        client.say(channel: dm_channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies?")
 
         ref.states[:in_conversation] = true
         data.text = ''
@@ -57,7 +55,7 @@ module SlackReferbot
       # ... email...
       if data.text != '' && ref.states[:get_email] && !ref.states[:get_vacancy]
         ref.attributes[:email] = data.text
-        
+
         ref.reformat_email
 
         client.say(channel: data.channel, text: "Great! Let me show you a list of vacancies that we are looking to fill.")
