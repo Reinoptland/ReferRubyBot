@@ -13,21 +13,28 @@ module SlackReferbot
         client.say(channel: dm_channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies?")
 
         client.on :message do |answer|
-          if /^n/i.match(answer.text)
-            client.say(text: "You're FIRED!", channel: data.channel)
-          elsif /^y/i.match(answer.text)
+            if /^n/i.match(answer.text)
+              client.say(text: "You're FIRED!", channel: data.channel)
+            elsif /^y/i.match(answer.text)
 
-            identifier = match['expression']
-            referral = {}
+              identifier = match['expression']
+              referral = {}
 
-            client.say(text: 'What can I fill in as a first name?', channel: data.channel)
-            $workaround =""
+              if !defined? first_name_listener_done
+
+                client.say(text: 'What can I fill in as a first name?', channel: data.channel)
+                $workaround =""
+              end
+              first_name_listener_done = true
 
             client.on :message do |answer|
-              client.instance_variable_get(:@callbacks)['message'].pop
-              referral[:first_name] = answer.text
+              if !defined? last_name_listener_done
+                client.instance_variable_get(:@callbacks)['message'].pop
+                referral[:first_name] = answer.text
 
-              client.say(text: 'Can you also give me the last name?', channel: data.channel)
+                client.say(text: 'Can you also give me the last name?', channel: data.channel)
+              end
+              last_name_listener_done = true
 
               client.on :message do |answer|
                 $workaround =""
