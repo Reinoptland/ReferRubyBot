@@ -4,7 +4,8 @@ module SlackReferbot
       command 'list' do |client, data, _match|
 
       vacancies = get_vacancy_list
-      vacancies_order_by_latest = vacancies.sort_by { |vacancy| vacancy[:created_at] }
+      vacancies_order_by_latest = vacancies_order_by_latest(vacancies)
+
       latest_vacancy = vacancies_order_by_latest.first
       latest_vacancy_date = Date.parse latest_vacancy[:created_at]
       latest_vacancy_date_string_format = latest_vacancy_date.to_s
@@ -25,11 +26,15 @@ module SlackReferbot
 end
 
 
+
 def get_vacancy_list
   recruitee_vacancy_list = HTTP.get('https://api.recruitee.com/c/referbot/careers/offers')
-  # receivelist = HTTParty.get('https://api.recruitee.com/c/levelupventures/careers/offers').to_json
   vacancies = JSON.parse(recruitee_vacancy_list, symbolize_names: true)
   vacancies[:offers]
+end
+
+def vacancies_order_by_latest(vacancies)
+  vacancies_order_by_latest = vacancies.sort_by { |vacancy| vacancy[:created_at] }
 end
 
 def display_all_vacancies_indexed(vacancies_order_by_latest)
