@@ -14,9 +14,6 @@ module SlackReferbot
     }
 
     operator '' do |client, data, match|
-
-      client.say(channel: data.channel, text: data.text)
-
       # User types refer
       if /(^refer| refer)/i.match(data.text) && conversation_states[:state_in_conversation] == false
         # # Get user's DM channel code
@@ -57,7 +54,7 @@ module SlackReferbot
       end
 
       # User is asked to provide a name...
-      if data.text != '' && conversation_states[:state_get_name]
+      if data.text != '' && conversation_states[:state_get_name] && !conversation_states[:state_get_email]
         referee[:name] << data.text
         client.say(channel: data.channel, text: "#{referee[:name].capitalize}, what a lovely name!")
 
@@ -69,7 +66,7 @@ module SlackReferbot
       end
 
       # ... email...
-      if data.text != '' && conversation_states[:state_get_email]
+      if data.text != '' && conversation_states[:state_get_email] && !conversation_states[:state_get_vacancy]
         referee[:email] << data.text
 
         client.say(channel: data.channel, text: "Great! Let me show you a list of vacancies that we are looking to fill.")
@@ -83,7 +80,7 @@ module SlackReferbot
       end
 
       # ... vacancy...
-      if data.text != '' && conversation_states[:state_get_vacancy]
+      if data.text != '' && conversation_states[:state_get_vacancy] && !conversation_states[:state_input_gathered]
         referee[:vacancy] << data.text
 
         conversation_states[:state_input_gathered] = true
