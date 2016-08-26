@@ -7,14 +7,16 @@ module SlackReferbot
 
           client.say(text: 'What can I fill in as a first name?', channel: data.channel)
           $workaround =""
+
           client.on :message do |answer|
           if !answer.text.match(/^add /i)
             client.instance_variable_get(:@callbacks)['message'].pop
             referral[:first_name] = answer.text
 
             client.say(text: 'Can you also give me the last name?', channel: data.channel)
+            $workaround =""
+
             client.on :message do |answer|
-              $workaround =""
               client.instance_variable_get(:@callbacks)['message'].pop
               referral[:last_name] = answer.text
 
@@ -22,8 +24,8 @@ module SlackReferbot
 
               client.say(text: "Can we get an e-mail maybe?", channel: data.channel)
 
+              $workaround =""
               client.on :message do |answer|
-                $workaround =""
 
                 client.instance_variable_get(:@callbacks)['message'].pop
 
@@ -37,6 +39,7 @@ module SlackReferbot
                 end
 
                 client.say(text: "How about a phonenumber?", channel: data.channel)
+
                 $workaround =""
                 client.on :message do |answer|
                   client.instance_variable_get(:@callbacks)['message'].pop
@@ -46,6 +49,7 @@ module SlackReferbot
                   client.say(text: "#{list}", channel: data.channel)
 
                   client.say(text: "Which vacancy would your candidate be best for?", channel: data.channel)
+
                   $workaround =""
                   client.on :message do |answer|
                     client.instance_variable_get(:@callbacks)['message'].pop
