@@ -7,7 +7,6 @@ module SlackReferbot
       vacancies_order_by_latest = vacancies_order_by_latest(vacancies)
 
       client.say(text: "#{display_all_vacancies_indexed(vacancies_order_by_latest)}", channel: data.channel)
-
       client.say(channel: data.channel, text: "Hey! If you know a guy just type \"refer\" (and possibly get 1000 euros!)")
       end
     end
