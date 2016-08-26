@@ -65,7 +65,7 @@ module SlackReferbot
                     # array. Needs non-hard coded fix
                     general_channel = uri_response["channels"][0]["id"]
 
-                    client.say(text: "<@#{data.user}> has just referred a friend to come join our company! What are your excuses, meatbags?}", channel: general_channel)
+                    client.say(text: "<@#{data.user}> has just referred a friend to come join our company! What are your excuses, meatbags?", channel: general_channel)
                   end
                 end
               end
