@@ -3,18 +3,18 @@ module SlackReferbot
     class Vacancylist < SlackRubyBot::Commands::Base
       command 'list' do |client, data, _match|
 
-      contents = fetchlist
-      contents = contents.sort_by { |vacancy| vacancy[:created_at] }
-      content = contents.first
-      latest_vacancy_date = Date.parse content[:created_at]
-      latest_vacancy_date = latest_vacancy_date.to_s
-      today = Time.now.strftime("%Y-%d-%m")
+      vacancies = get_vacancy_list
+      vacancies_order_by_latest = vacancies.sort_by { |vacancy| vacancy[:created_at] }
+      latest_vacancy = vacancies_order_by_latest.first
+      latest_vacancy_date = Date.parse latest_vacancy[:created_at]
+      latest_vacancy_date_string_format = latest_vacancy_date.to_s
+      date_today = Time.now.strftime("%Y-%d-%m")
 
-      client.say(text: "#{display(contents)}", channel: data.channel)
+      client.say(text: "#{display_all_vacancies_indexed(vacancies_order_by_latest)}", channel: data.channel)
 
-      client.say(channel: data.channel, text: " #{content[:title]} \n #{content[:careers_url]} \n #{Time.now.strftime("at %I:%M%p")} \n #{today} \n #{} ")
+      client.say(channel: data.channel, text: " #{latest_vacancy[:title]} \n #{latest_vacancy[:careers_url]} \n #{Time.now.strftime("at %I:%M%p")} \n #{date_today} \n #{} ")
 
-        if today === latest_vacancy_date
+        if date_today === latest_vacancy_date_string_format
         client.say(channel: data.channel, text: "oink")
         else
         client.say(channel: data.channel, text: "boo!")
@@ -25,17 +25,17 @@ module SlackReferbot
 end
 
 
-def fetchlist
-  receivelist = HTTP.get('https://api.recruitee.com/c/referbot/careers/offers')
+def get_vacancy_list
+  recruitee_vacancy_list = HTTP.get('https://api.recruitee.com/c/referbot/careers/offers')
   # receivelist = HTTParty.get('https://api.recruitee.com/c/levelupventures/careers/offers').to_json
-  test1 = JSON.parse(receivelist, symbolize_names: true)
-  test1[:offers]
+  vacancies = JSON.parse(recruitee_vacancy_list, symbolize_names: true)
+  vacancies[:offers]
 end
 
-def display(contents)
-  list = ""
-  contents.each_with_index do |content, index|
-    list = list + "#{index+1}, #{content[:title]} \n #{content[:careers_url]} \n"
+def display_all_vacancies_indexed(vacancies_order_by_latest)
+  display_list = ""
+  vacancies_order_by_latest.each_with_index do |vacancy, index|
+    display_list = display_list + "#{index+1}, #{vacancy[:title]} \n #{vacancy[:careers_url]} \n"
   end
-  return list
+  return display_list
 end
