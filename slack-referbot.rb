@@ -8,5 +8,5 @@ require 'slack-ruby-client'
 # require 'slack-referbot/commands/email'
 # require 'slack-referbot/commands/help'
 
-#The bot class should be excecuted after all other scripts
+require 'lib/referee'
 require 'slack-referbot/bot'
