@@ -25,6 +25,7 @@ module SlackReferbot
         client.say(channel: data.channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies?")
 
         conversation_states[:state_in_conversation] = true
+        progression_guard = data.text
 
       end
 
@@ -45,10 +46,10 @@ module SlackReferbot
 
         conversation_states[:state_in_conversation] = false
 
-      # elsif !/(^y|^n)/i.match(data.text) && conversation_states[:state_in_conversation]
-      #   client.say(channel: data.channel, text: "I didn't quite get that... Do you want to refer someone?")
-      #
-      #   client.instance_variable_get(:@callbacks)['message'].pop
+      elsif !/(^y|^n)/i.match(data.text) && progression_guard != data.text && conversation_states[:state_in_conversation] && conversation_states[:state_get_name] == false
+        client.say(channel: data.channel, text: "I didn't quite get that... Do you want to refer someone?")
+
+        progression_guard = data.text
 
       end
 
