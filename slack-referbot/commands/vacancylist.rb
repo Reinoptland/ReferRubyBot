@@ -6,20 +6,9 @@ module SlackReferbot
       vacancies = get_vacancy_list
       vacancies_order_by_latest = vacancies_order_by_latest(vacancies)
 
-      latest_vacancy = vacancies_order_by_latest.first
-      latest_vacancy_date = Date.parse latest_vacancy[:created_at]
-      latest_vacancy_date_string_format = latest_vacancy_date.to_s
-      date_today = Time.now.strftime("%Y-%d-%m")
-
       client.say(text: "#{display_all_vacancies_indexed(vacancies_order_by_latest)}", channel: data.channel)
 
-      client.say(channel: data.channel, text: " #{latest_vacancy[:title]} \n #{latest_vacancy[:careers_url]} \n #{Time.now.strftime("at %I:%M%p")} \n #{date_today} \n #{} ")
-
-        if date_today === latest_vacancy_date_string_format
-        client.say(channel: data.channel, text: "oink")
-        else
-        client.say(channel: data.channel, text: "boo!")
-        end
+      client.say(channel: data.channel, text: "Hey! If you know a guy just type \"refer\" (and possibly get 1000 euros!)")
       end
     end
   end
