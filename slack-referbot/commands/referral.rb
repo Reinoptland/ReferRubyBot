@@ -21,8 +21,10 @@ module SlackReferbot
 
 
               client.say(text: "Can we get an e-mail maybe?", channel: data.channel)
-              $workaround =""
+
               client.on :message do |answer|
+                $workaround =""
+
                 client.instance_variable_get(:@callbacks)['message'].pop
 
                 email_slack_formatted = answer.text
@@ -53,6 +55,17 @@ module SlackReferbot
                     client.say(text: "Thank you! I have added `#{identifier}` to the registry.", channel: data.channel)
                     $workaround =""
                     Redis.current.mapped_hmset(identifier, referral)
+
+                    uri = URI("https://slack.com/api/channels.list?token=#{ENV['SLACK_API_TOKEN']}")
+
+                    # Needs reformatting with names to symbol
+                    uri_response = JSON.parse(Net::HTTP.get(uri))
+
+                    # Assuming #general is always the first item in the channels
+                    # array. Needs non-hard coded fix
+                    general_channel = uri_response["channels"][0]["id"]
+
+                    client.say(text: "<@#{data.user}> has just referred a friend to come join our company! What are your excuses, meatbags?", channel: general_channel)
                   end
                 end
               end
