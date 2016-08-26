@@ -29,3 +29,12 @@ We didn't use any Rspec testing during the project. Yet we did set up the gems. 
 
 # Recruitee api
 In the referal command (slack-referbot/commands/referral.rb) we get a list of vacancies from the Recruitee api. As for now its not possible to post referral data back to Recruitee.
+
+# Build in commands
+As build now the bot listens to everything in the chat and responses on everything in DM. This is annoying in group chats but necessary in 1 on 1. This is a problem yet to be addressed.
+
+As other working commands there are:
+* help  - shows help function
+* list  - shows a list of vacanties
+* add   - add new referral
+* refer - When refer is said in a public channel the bot reacts in DM
