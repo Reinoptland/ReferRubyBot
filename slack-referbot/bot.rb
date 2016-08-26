@@ -87,7 +87,7 @@ module SlackReferbot
         ref.states[:get_vacancy] = false
         ref.states[:input_gathered] = false
 
-        broadcast_to_general
+        sc.broadcast_to_general("<@#{data.user}> has just referred a friend to come join our company!", client)
       end
 
     end # Outer operator
@@ -103,17 +103,4 @@ def getlist
     list = list + "#{index+1}, #{content[:title]} \n #{content[:careers_url]} \n"
   end
   return list
-end
-
-def broadcast_to_general
-  uri = URI("https://slack.com/api/channels.list?token=#{ENV['SLACK_API_TOKEN']}")
-
-  # Needs reformatting with names to symbol
-  uri_response = JSON.parse(Net::HTTP.get(uri))
-
-  # Assuming #general is always the first item in the channels
-  # array. Needs non-hard coded fix
-  general_channel = uri_response["channels"][0]["id"]
-
-  client.say(text: "Someone has just referred a friend to come join our company! What are your excuses, meatbags?", channel: general_channel)
 end
