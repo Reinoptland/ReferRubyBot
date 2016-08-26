@@ -10,7 +10,8 @@ module SlackReferbot
 
     referee = {
       name: '',
-      email: ''
+      email: '',
+      vacancy: ''
     }
 
     operator '' do |client, data, match|
@@ -71,7 +72,8 @@ module SlackReferbot
 
         client.say(channel: data.channel, text: "Great! Let me show you a list of vacancies that we are looking to fill.")
 
-        getlist
+        list = getlist
+        client.say(text: "#{list}", channel: data.channel)
 
         client.say(channel: data.channel, text: "Please enter the vacancy that you would like to recommend #{referee[:name]} for. If you think an open application would be more appropriate, just type 0!")
 
@@ -87,6 +89,7 @@ module SlackReferbot
         data.text = ''
       end
 
+      # Display result
       if conversation_states[:state_input_gathered]
         client.say(channel: data.channel, text: "Awesome! You have finished referring #{referee[:name]} for the job of #{referee[:vacancy]}. We'll initiate contact at #{referee[:email]} as soon as possible!")
 
