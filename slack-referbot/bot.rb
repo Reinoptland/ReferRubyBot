@@ -28,7 +28,7 @@ module SlackReferbot
         client.say(channel: data.channel, text: "Hi <@#{data.user}>. Would you like to refer someone to one of our open vacancies?")
 
         conversation_states[:state_in_conversation] = true
-        progression_guard = data.text
+        data.text = ''
 
       end
 
@@ -40,7 +40,7 @@ module SlackReferbot
         client.say(channel: data.channel, text: "What is your referee's name?")
 
         conversation_states[:state_get_name] = true
-        progression_guard = data.text
+        data.text = ''
 
       elsif /^n/i.match(data.text) && conversation_states[:state_in_conversation]
         client.say(channel: data.channel, text: "My bad!")
@@ -49,49 +49,55 @@ module SlackReferbot
 
         conversation_states[:state_in_conversation] = false
 
-      elsif !/(^y|^n)/i.match(data.text) && progression_guard != data.text && conversation_states[:state_in_conversation] && conversation_states[:state_get_name] == false
+      elsif !/(^y|^n)/i.match(data.text) && data.text != '' && conversation_states[:state_in_conversation] && conversation_states[:state_get_name] == false
         client.say(channel: data.channel, text: "I didn't quite get that... Do you want to refer someone?")
 
-        progression_guard = data.text
+        data.text = ''
 
       end
 
       # User is asked to provide a name...
-      if progression_guard != data.text && conversation_states[:state_get_name]
+      if data.text != '' && conversation_states[:state_get_name]
         referee[:name] << data.text
         client.say(channel: data.channel, text: "#{referee[:name].capitalize}, what a lovely name!")
 
         client.say(channel: data.channel, text: "We will have to contact #{referee[:name]} as well... Do you have an e-mail address?")
 
         conversation_states[:state_get_email] = true
-        progression_guard = data.text
+        data.text = ''
 
       end
 
       # ... email...
-      if progression_guard != data.text && conversation_states[:state_get_email]
+      if data.text != '' && conversation_states[:state_get_email]
         referee[:email] << data.text
 
         client.say(channel: data.channel, text: "Great! Let me show you a list of vacancies that we are looking to fill.")
 
-        list = getlist
+        getlist
 
         client.say(channel: data.channel, text: "Please enter the vacancy that you would like to recommend #{referee[:name]} for. If you think an open application would be more appropriate, just type 0!")
 
         conversation_states[:state_get_vacancy] = true
-        progression_guard = data.text
+        data.text = ''
       end
 
       # ... vacancy...
-      if progression_guard != data.text && conversation_states[:state_get_vacancy]
+      if data.text != '' && conversation_states[:state_get_vacancy]
         referee[:vacancy] << data.text
 
         conversation_states[:state_input_gathered] = true
-        progression_guard = data.text
+        data.text = ''
       end
 
       if conversation_states[:state_input_gathered]
         client.say(channel: data.channel, text: "Awesome! You have finished referring #{referee[:name]} for the job of #{referee[:vacancy]}. We'll initiate contact at #{referee[:email]} as soon as possible!")
+
+        conversation_states[:state_in_conversation] = false
+        conversation_states[:state_get_name] = false
+        conversation_states[:state_get_email] = false
+        conversation_states[:state_get_vacancy] = false
+        conversation_states[:state_input_gathered] = false
 
         broadcast_to_general
       end
